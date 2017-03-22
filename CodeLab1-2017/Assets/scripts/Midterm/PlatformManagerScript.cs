@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackgroundManagerScript : MonoBehaviour {
+public class PlatformManagerScript : MonoBehaviour {
 
 	public Transform prefab; //the prefab to be spawned
 	public Vector3 minSize, maxSize;//vectors for min and max scale of spawned objects
-
+	public Vector3 minGap, maxGap; //vectors for min and max possible gap distance between platforms
+	public float minY, maxY; //min and max y elevations of platforms
 
 	public int numberOfObjects; //number of objects that will be spawned
 	public float recycleOffset; //offset determines how far left of player the object should recycle
@@ -47,8 +48,19 @@ public class BackgroundManagerScript : MonoBehaviour {
 		Transform spawn = objectQueue.Dequeue();
 		spawn.localScale = scale; //sets the individual spawned object scale to the random values of 'scale'
 		spawn.localPosition = position; //sets the position of the spawned object to equal the next spawn position
-		nextPos.x += scale.x; //adds the x scale to the x of the next spawn position 
+		//nextPos.x += scale.x; //adds the x scale to the x of the next spawn position 
 		objectQueue.Enqueue(spawn); //places the object in the queue
 
+		nextPos += new Vector3(
+			Random.Range(minGap.x, maxGap.x) + scale.x,
+			Random.Range(minGap.y, maxGap.y),
+			Random.Range(minGap.z, maxGap.z)); //adds randomized gap values to the next spawn position
+
+		if(nextPos.y < minY){ //if the next spawn position is too low
+			nextPos.y = minY + maxGap.y; //raise it 
+		}
+		else if(nextPos.y > maxY){ //if the next spawn position is too high
+			nextPos.y = maxY - maxGap.y; //lower it
+		}
 	}
 }
