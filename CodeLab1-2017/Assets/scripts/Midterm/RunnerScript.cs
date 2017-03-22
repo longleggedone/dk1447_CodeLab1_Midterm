@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RunnerScript : MonoBehaviour {
 
+
 	public Rigidbody rb;
 
 	public static float distanceTraveled;// how far the player has moved right since the beginning
