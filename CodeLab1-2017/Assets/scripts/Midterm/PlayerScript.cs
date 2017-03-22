@@ -11,7 +11,7 @@ public class PlayerScript : MonoBehaviour {
 	public float minJumpHeight = 1f; //min ""
 	public float timeToJumpApex = .4f; //time to reach max jump height
 
-	public float moveSpeed = 6f; //player movement speed
+	public float moveSpeed; //player movement speed
 	float maxJumpVelocity; //player max jump velocity
 	float minJumpVelocity; // min ""
 	float gravity; //downward 'force' on player
@@ -48,8 +48,8 @@ public class PlayerScript : MonoBehaviour {
 			}
 		}
 
-		velocity.x = moveSpeed * Time.deltaTime;
-		moveSpeed += 1 * Time.deltaTime;
+		velocity.x = moveSpeed;
+		moveSpeed += 0.01f * Time.deltaTime;
 //		float targetVelocityX = input.x * moveSpeed; //sets x velocity to player move speed multiplied by input
 //		velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing,
 //									(controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne); 
