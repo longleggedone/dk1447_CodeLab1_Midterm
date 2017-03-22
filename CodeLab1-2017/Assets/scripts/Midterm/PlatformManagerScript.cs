@@ -30,7 +30,7 @@ public class PlatformManagerScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (objectQueue.Peek().localPosition.x + recycleOffset < RunnerScript.distanceTraveled){ //if the object at the start of the queue is far enough left of the player
+		if (objectQueue.Peek().localPosition.x + recycleOffset < PlayerScript.distanceTraveled){ //if the object at the start of the queue is far enough left of the player
 			Recycle(); //calls recycle function
 		}
 	}
