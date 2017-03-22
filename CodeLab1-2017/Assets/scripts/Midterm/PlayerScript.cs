@@ -7,6 +7,9 @@ public class PlayerScript : MonoBehaviour {
 
 	public static float distanceTraveled;// how far the player has moved right since the beginning
 
+	public float deathHeight = -50f;
+	public bool calledDeath = false;
+
 	public float maxJumpHeight = 4f; //max height of player's jump
 	public float minJumpHeight = 1f; //min ""
 	public float timeToJumpApex = .4f; //time to reach max jump height
@@ -33,6 +36,15 @@ public class PlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(transform.position.y < deathHeight){
+			if(!calledDeath){
+				GameManagerScript.playerDead = true;
+				SpeedScoreManagerScript.instance.PostScores();
+			}
+			calledDeath = true;
+			velocity = Vector3.zero;
+		
+		}
 		if(controller.collisions.above || controller.collisions.below){ //if colliding with something above or below
 			velocity.y = 0; //reset y velocity
 		}

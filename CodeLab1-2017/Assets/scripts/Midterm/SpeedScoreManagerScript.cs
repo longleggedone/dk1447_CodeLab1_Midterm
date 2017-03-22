@@ -55,6 +55,8 @@ public class SpeedScoreManagerScript : MonoBehaviour {
 
 
 	public Text scoreText;
+	public Text highScoreText;
+	public Text finalScoreText;
 
 	public GameObject player;
 	public static SpeedScoreManagerScript instance;
@@ -77,6 +79,13 @@ public class SpeedScoreManagerScript : MonoBehaviour {
 	void Update () {
 		Score = player.GetComponent<PlayerScript>().moveSpeed; //gets move speed from player script
 		scoreText.text = "MPH: " + Score.ToString("F3"); //converts speed to a string with 3 decimal places, zeroes allowed
-		print("MPH: " + HighScore);
+		//print("MPH: " + HighScore);
+//		finalScoreText.text = "Your Score - MPH: " + Score.ToString("F3");
+//		highScoreText.text = "High Score - MPH: " + HighScore.ToString("F3");
+	}
+
+	public void PostScores(){
+		finalScoreText.text = "Your Score - MPH: " + Score.ToString("F3");
+		highScoreText.text = "High Score - MPH: " + HighScore.ToString("F3");
 	}
 }

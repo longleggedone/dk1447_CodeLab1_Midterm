@@ -66,6 +66,7 @@ public class ControllerScript : MonoBehaviour {
 			Vector2 rayOrigin = (directionY == -1)?raycastOrigins.bottomLeft:raycastOrigins.topLeft; //sets the ray origin, if the y direction is negative use the bottom left, else use the top left
 			rayOrigin += Vector2.right * (verticalRaySpacing * i + velocity.x); //move the ray origin to the right accounting for spacing, iteration, and x velocity
 			RaycastHit hit; //hit info for raycast
+			Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
 			if(Physics.Raycast(rayOrigin, Vector3.up * directionY, out hit, rayLength, collisionMask)){
 				velocity.y = (hit.distance - SKIN_WIDTH) * directionY; //updates y velocity 
 				rayLength = hit.distance;//to prevent conflicts between raycasts
@@ -73,7 +74,7 @@ public class ControllerScript : MonoBehaviour {
 				collisions.above = directionY == 1; //same for above bool
 
 			} //raycasts from origin, in direction, for length, using layermask
-			Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
+
 			//Debug.DrawRay(raycastOrigins.bottomLeft + Vector2.right * verticalRaySpacing * i, Vector2.up * -2, Color.red);//debugging visualizer, draws raycasts in scene view
 
 //			if(hit != null){ //if the raycast hits
