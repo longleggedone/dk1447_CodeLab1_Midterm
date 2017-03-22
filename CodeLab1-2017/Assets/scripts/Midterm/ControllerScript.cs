@@ -27,9 +27,30 @@ public class ControllerScript : MonoBehaviour {
 	public void Move(Vector3 velocity){
 		UpdateRaycastOrigins(); //exactly what it says
 
-		VerticalCollisions(ref velocity);
+		if (velocity.x != 0){ //if moving on the x axis
+			HorizontalCollisions(ref velocity); //check for horizontal collisions
+		}
+		if (velocity.y != 0){ //if moving on the y axis
+			VerticalCollisions(ref velocity); //check for vertical collisions
+		}
+		transform.Translate(velocity); //move player by velocity
+	}
 
-		transform.Translate(velocity);
+	void HorizontalCollisions(ref Vector3 velocity){
+		float directionX = Mathf.Sign (velocity.x); //gets direction of x velocity
+		float rayLength = Mathf.Abs(velocity.x) + SKIN_WIDTH; //makes the ray equal to the x velocity, accounting for skin width
+		for (int i = 0; i < horizontalRayCount; i ++){ //for each ray in raycount
+			Vector2 rayOrigin = (directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight; //sets the ray origin, if the x direction is negative use the bottom left, else use the bottom right
+			rayOrigin += Vector2.up * (horizontalRaySpacing * i); //move the ray origin to the right accounting for spacing and iteration
+			RaycastHit hit; //hit info for raycast
+			if(Physics.Raycast(rayOrigin, Vector3.right * directionX, out hit, rayLength, collisionMask)){
+				velocity.x = (hit.distance - SKIN_WIDTH) * directionX; //updates x velocity 
+				rayLength = hit.distance;//to prevent conflicts between raycasts
+			} //raycasts from origin, in direction, for length, using layermask
+
+			Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);//debugging visualizer, draws raycasts in scene view
+
+		}
 	}
 
 	void VerticalCollisions(ref Vector3 velocity){
@@ -43,8 +64,8 @@ public class ControllerScript : MonoBehaviour {
 				velocity.y = (hit.distance - SKIN_WIDTH) * directionY; //updates y velocity 
 				rayLength = hit.distance;//to prevent conflicts between raycasts
 			} //raycasts from origin, in direction, for length, using layermask
-
-			Debug.DrawRay(raycastOrigins.bottomLeft + Vector2.right * verticalRaySpacing * i, Vector2.up * -2, Color.red);//debugging visualizer, draws raycasts in scene view
+			Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
+			//Debug.DrawRay(raycastOrigins.bottomLeft + Vector2.right * verticalRaySpacing * i, Vector2.up * -2, Color.red);//debugging visualizer, draws raycasts in scene view
 
 //			if(hit != null){ //if the raycast hits
 //				velocity.y = (hit.distance - SKIN_WIDTH) * directionY; //updates y velocity 
